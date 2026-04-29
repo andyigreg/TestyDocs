@@ -1,1 +1,143 @@
-{}
+{
+  "title": "Calculator App PRD",
+  "version": "1.0",
+  "status": "Draft",
+  "overview": {
+    "productName": "Calculator App",
+    "description": "A clean, reliable, and intuitive calculator application for everyday arithmetic and scientific calculations.",
+    "goals": [
+      "Provide a fast and accurate calculation experience",
+      "Support both basic and scientific calculation modes",
+      "Deliver a consistent, accessible UI across devices"
+    ],
+    "successMetrics": [
+      "Zero calculation errors in standard arithmetic operations",
+      "App load time under 1 second",
+      "User task completion rate above 95% for basic operations"
+    ]
+  },
+  "userPersonas": [
+    {
+      "name": "Everyday User",
+      "description": "A person who needs quick arithmetic for daily tasks such as splitting bills, budgeting, or shopping.",
+      "needs": ["Simple interface", "Fast input", "Clear display of results"]
+    },
+    {
+      "name": "Student",
+      "description": "A secondary or tertiary student who needs scientific functions for coursework.",
+      "needs": ["Trigonometric functions", "Exponents and roots", "Calculation history"]
+    },
+    {
+      "name": "Professional",
+      "description": "An office worker or tradesperson doing quick calculations on the go.",
+      "needs": ["Reliable accuracy", "Copy/paste result support", "Minimal distractions"]
+    }
+  ],
+  "features": [
+    {
+      "id": "F-01",
+      "name": "Basic Arithmetic",
+      "priority": "Must Have",
+      "description": "Support addition, subtraction, multiplication, and division.",
+      "acceptanceCriteria": [
+        "User can input two or more numbers and an operator",
+        "Result is displayed immediately upon pressing equals",
+        "Division by zero displays a clear error message"
+      ]
+    },
+    {
+      "id": "F-02",
+      "name": "Scientific Mode",
+      "priority": "Must Have",
+      "description": "Extend basic mode with scientific functions.",
+      "acceptanceCriteria": [
+        "User can toggle between basic and scientific mode",
+        "Scientific mode includes: sin, cos, tan, log, ln, square root, exponentiation, pi, and factorial",
+        "All scientific functions return results accurate to at least 10 decimal places"
+      ]
+    },
+    {
+      "id": "F-03",
+      "name": "Calculation History",
+      "priority": "Should Have",
+      "description": "Display a scrollable log of recent calculations within the session.",
+      "acceptanceCriteria": [
+        "Last 20 calculations are displayed in a history panel",
+        "User can tap a history entry to restore it to the input field",
+        "History is cleared when the session ends"
+      ]
+    },
+    {
+      "id": "F-04",
+      "name": "Copy Result",
+      "priority": "Should Have",
+      "description": "Allow the user to copy the current result to the clipboard.",
+      "acceptanceCriteria": [
+        "A copy button or long-press gesture copies the displayed result",
+        "A confirmation toast or indicator appears after copying"
+      ]
+    },
+    {
+      "id": "F-05",
+      "name": "Keyboard Support",
+      "priority": "Must Have",
+      "description": "Full physical and on-screen keyboard input support.",
+      "acceptanceCriteria": [
+        "All numeric and operator keys map correctly to calculator functions",
+        "Enter key triggers equals",
+        "Backspace key deletes the last character"
+      ]
+    },
+    {
+      "id": "F-06",
+      "name": "Accessibility",
+      "priority": "Must Have",
+      "description": "The app meets WCAG 2.1 AA accessibility standards.",
+      "acceptanceCriteria": [
+        "All buttons have descriptive ARIA labels",
+        "Colour contrast ratio meets 4.5:1 minimum",
+        "Screen reader compatibility confirmed on iOS VoiceOver and Android TalkBack"
+      ]
+    },
+    {
+      "id": "F-07",
+      "name": "Responsive Design",
+      "priority": "Must Have",
+      "description": "The UI adapts correctly to mobile, tablet, and desktop screen sizes.",
+      "acceptanceCriteria": [
+        "Layout is usable at viewport widths from 320px to 1920px",
+        "Buttons are a minimum of 44x44px tap target on mobile"
+      ]
+    },
+    {
+      "id": "F-08",
+      "name": "Dark Mode",
+      "priority": "Nice to Have",
+      "description": "Support a dark colour theme that follows the device system preference.",
+      "acceptanceCriteria": [
+        "App detects and applies system dark/light mode automatically",
+        "User can manually override theme preference within the app"
+      ]
+    }
+  ],
+  "outOfScope": [
+    "Currency conversion",
+    "Unit conversion",
+    "Graphing or plotting functions",
+    "User accounts or cloud sync"
+  ],
+  "technicalConsiderations": [
+    "Calculations must use a reliable math library to avoid floating-point precision errors",
+    "App must function fully offline with no network dependency",
+    "State should be preserved if the user navigates away and returns within the same session"
+  ],
+  "assumptions": [
+    "The app will be delivered as a web application, with mobile app wrappers considered in a future phase",
+    "No backend infrastructure is required for the initial release"
+  ],
+  "openQuestions": [
+    "Should calculation history persist across sessions (requires local storage or a backend)?",
+    "Is there a requirement to support a specific set of scientific functions beyond the standard set listed?",
+    "What is the target browser/OS support matrix?"
+  ]
+}
