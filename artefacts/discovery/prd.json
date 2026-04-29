@@ -1,1 +1,177 @@
-{}
+{
+  "title": "Fitness App PRD",
+  "version": "1.0",
+  "status": "Draft",
+  "overview": {
+    "productName": "FitTrack",
+    "summary": "A mobile fitness application that helps users set goals, track workouts, monitor progress, and stay motivated through personalised plans and social features.",
+    "problem": "People struggle to maintain consistent fitness habits due to lack of structured guidance, poor progress visibility, and low accountability. Existing apps are either too complex for beginners or too limited for intermediate users.",
+    "targetAudience": [
+      "Adults aged 18–45 looking to improve general fitness",
+      "Beginners who need guided workout plans",
+      "Intermediate users who want to track and optimise performance",
+      "Busy professionals who need flexible, time-efficient routines"
+    ],
+    "platforms": ["iOS", "Android"]
+  },
+  "goals": [
+    "Enable users to create and follow personalised workout plans",
+    "Provide clear, motivating progress tracking over time",
+    "Reduce drop-off rate by surfacing streaks, milestones, and reminders",
+    "Support both gym-based and home/bodyweight workouts",
+    "Deliver a simple onboarding experience that works for beginners"
+  ],
+  "nonGoals": [
+    "Nutrition tracking or meal planning (out of scope for v1)",
+    "Live personal trainer video sessions",
+    "Medical or rehabilitation advice",
+    "Wearable device integration (deferred to v2)"
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "role": "new user",
+      "goal": "complete an onboarding flow that captures my fitness level and goals",
+      "benefit": "so that I receive a workout plan suited to me from day one"
+    },
+    {
+      "id": "US-002",
+      "role": "user",
+      "goal": "browse and select from a library of workout plans",
+      "benefit": "so that I can find a routine that fits my schedule and equipment"
+    },
+    {
+      "id": "US-003",
+      "role": "user",
+      "goal": "log a completed workout with sets, reps, and weights",
+      "benefit": "so that I have an accurate record of my training history"
+    },
+    {
+      "id": "US-004",
+      "role": "user",
+      "goal": "view a dashboard showing my progress over the past weeks",
+      "benefit": "so that I can see improvement and stay motivated"
+    },
+    {
+      "id": "US-005",
+      "role": "user",
+      "goal": "receive push notifications reminding me of scheduled workouts",
+      "benefit": "so that I maintain consistency even on busy days"
+    },
+    {
+      "id": "US-006",
+      "role": "user",
+      "goal": "create a custom workout by selecting exercises from a library",
+      "benefit": "so that I can tailor sessions to my specific needs"
+    },
+    {
+      "id": "US-007",
+      "role": "user",
+      "goal": "view exercise instructions with descriptions and demonstration images",
+      "benefit": "so that I perform movements safely and correctly"
+    },
+    {
+      "id": "US-008",
+      "role": "user",
+      "goal": "set weekly workout frequency goals and track my streak",
+      "benefit": "so that I build a sustainable long-term habit"
+    }
+  ],
+  "features": [
+    {
+      "id": "F-001",
+      "name": "Onboarding & Goal Setup",
+      "priority": "Must Have",
+      "description": "A multi-step onboarding flow capturing fitness level (beginner / intermediate / advanced), primary goal (weight loss, muscle gain, general fitness, endurance), available equipment, and weekly availability. Outputs a recommended plan."
+    },
+    {
+      "id": "F-002",
+      "name": "Workout Plan Library",
+      "priority": "Must Have",
+      "description": "A curated library of pre-built plans organised by goal, duration, and equipment required. Each plan includes a structured week-by-week schedule."
+    },
+    {
+      "id": "F-003",
+      "name": "Exercise Library",
+      "priority": "Must Have",
+      "description": "A searchable and filterable database of exercises with name, muscle groups targeted, equipment needed, step-by-step instructions, and static demonstration images."
+    },
+    {
+      "id": "F-004",
+      "name": "Workout Logger",
+      "priority": "Must Have",
+      "description": "In-session logging of sets, reps, and weight (or time/distance for cardio). Supports rest timers and the ability to swap exercises mid-session."
+    },
+    {
+      "id": "F-005",
+      "name": "Progress Dashboard",
+      "priority": "Must Have",
+      "description": "Visual charts showing workout frequency, volume over time, and personal records (PRs) per exercise. Includes a weekly summary and streak counter."
+    },
+    {
+      "id": "F-006",
+      "name": "Custom Workout Builder",
+      "priority": "Should Have",
+      "description": "Allows users to build and save their own workouts by picking exercises from the library and specifying sets, reps, and rest periods."
+    },
+    {
+      "id": "F-007",
+      "name": "Notifications & Reminders",
+      "priority": "Should Have",
+      "description": "Configurable push notifications for scheduled workouts, streak reminders, and milestone celebrations."
+    },
+    {
+      "id": "F-008",
+      "name": "User Profile & Settings",
+      "priority": "Must Have",
+      "description": "Profile page showing goals, current plan, stats summary, and settings for units (kg/lbs), notification preferences, and account management."
+    },
+    {
+      "id": "F-009",
+      "name": "Achievements & Milestones",
+      "priority": "Could Have",
+      "description": "Badge system rewarding users for hitting streaks, completing plans, and setting new personal records to drive engagement and motivation."
+    },
+    {
+      "id": "F-010",
+      "name": "Social / Community Feed",
+      "priority": "Could Have",
+      "description": "Optional social layer allowing users to share completed workouts, follow friends, and give kudos — deferred to v1.1 pending user research validation."
+    }
+  ],
+  "successMetrics": [
+    {
+      "metric": "Day-7 retention rate",
+      "target": "≥ 40%"
+    },
+    {
+      "metric": "Day-30 retention rate",
+      "target": "≥ 20%"
+    },
+    {
+      "metric": "Average workouts logged per active user per week",
+      "target": "≥ 2.5"
+    },
+    {
+      "metric": "Onboarding completion rate",
+      "target": "≥ 75%"
+    },
+    {
+      "metric": "App Store rating",
+      "target": "≥ 4.3 stars"
+    }
+  ],
+  "assumptions": [
+    "Users have a smartphone with iOS 15+ or Android 10+",
+    "Core functionality is available offline with sync on reconnection",
+    "Content (exercises, plans) is managed via a CMS by an internal team",
+    "Authentication will be handled via email/password and social login (Google, Apple)"
+  ],
+  "openQuestions": [
+    "Should v1 include a freemium model with a premium subscription tier, or launch as fully free?",
+    "What is the target exercise library size at launch (e.g. 100, 250, 500 exercises)?",
+    "Is there a specific design system or brand identity to align to?",
+    "Are there accessibility requirements (e.g. WCAG 2.1 AA compliance)?",
+    "What analytics platform will be used for tracking engagement metrics?"
+  ]
+}
