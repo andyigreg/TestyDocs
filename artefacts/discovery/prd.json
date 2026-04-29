@@ -1,1 +1,99 @@
-{}
+{
+  "title": "Fizz Buzz",
+  "version": "1.0",
+  "status": "Draft",
+  "overview": {
+    "summary": "Fizz Buzz is a number-printing program that iterates through a sequence of integers and replaces specific multiples with designated words. It is a foundational programming exercise used to validate basic control flow, modulo arithmetic, and output formatting skills.",
+    "goals": [
+      "Provide a correct, deterministic output for any given input range",
+      "Demonstrate clear branching logic for multiple divisibility conditions",
+      "Produce human-readable output suitable for display or logging"
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Iterating over a consecutive range of positive integers",
+      "Replacing multiples of 3 with 'Fizz'",
+      "Replacing multiples of 5 with 'Buzz'",
+      "Replacing multiples of both 3 and 5 with 'FizzBuzz'",
+      "Printing all other integers as-is"
+    ],
+    "out_of_scope": [
+      "Negative numbers or non-integer input",
+      "Configurable replacement words or divisors",
+      "Persistence or storage of results",
+      "User interface beyond standard output"
+    ]
+  },
+  "functional_requirements": [
+    {
+      "id": "FR-01",
+      "description": "The program shall accept a start and end integer defining an inclusive range to iterate over."
+    },
+    {
+      "id": "FR-02",
+      "description": "For each integer in the range, if it is divisible by both 3 and 5, the program shall output 'FizzBuzz'."
+    },
+    {
+      "id": "FR-03",
+      "description": "For each integer in the range, if it is divisible by 3 only, the program shall output 'Fizz'."
+    },
+    {
+      "id": "FR-04",
+      "description": "For each integer in the range, if it is divisible by 5 only, the program shall output 'Buzz'."
+    },
+    {
+      "id": "FR-05",
+      "description": "For each integer in the range that meets none of the above conditions, the program shall output the integer itself."
+    },
+    {
+      "id": "FR-06",
+      "description": "Each output value shall appear on its own line."
+    },
+    {
+      "id": "FR-07",
+      "description": "The divisibility check for both 3 and 5 (FR-02) shall be evaluated before the individual checks (FR-03, FR-04) to ensure correct output precedence."
+    }
+  ],
+  "non_functional_requirements": [
+    {
+      "id": "NFR-01",
+      "description": "The program shall produce output in O(n) time relative to the size of the input range."
+    },
+    {
+      "id": "NFR-02",
+      "description": "The program shall produce identical output for the same input range on every execution (deterministic)."
+    },
+    {
+      "id": "NFR-03",
+      "description": "The program shall handle a range of at least 1 to 1,000,000 without error or performance degradation."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-01",
+      "scenario": "Standard range 1 to 20",
+      "expected_output": ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz","16","17","Fizz","19","Buzz"]
+    },
+    {
+      "id": "AC-02",
+      "scenario": "Single value divisible by both 3 and 5 (e.g. 15)",
+      "expected_output": ["FizzBuzz"]
+    },
+    {
+      "id": "AC-03",
+      "scenario": "Single value not divisible by 3 or 5 (e.g. 1)",
+      "expected_output": ["1"]
+    },
+    {
+      "id": "AC-04",
+      "scenario": "Single value divisible by 3 only (e.g. 9)",
+      "expected_output": ["Fizz"]
+    },
+    {
+      "id": "AC-05",
+      "scenario": "Single value divisible by 5 only (e.g. 10)",
+      "expected_output": ["Buzz"]
+    }
+  ]
+}
