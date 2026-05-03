@@ -1,1 +1,381 @@
-{}
+{
+  "title": "NOOB — Agentic SDLC Orchestration Platform",
+  "version": "1.0",
+  "status": "Draft",
+  "sourceSpec": "noob-spec-v1.1.md",
+  "overview": {
+    "productName": "NOOB",
+    "summary": "NOOB is an async human-in-the-loop orchestration platform for AI-driven software development. It coordinates stateless AI agents — called Noobs — with human stakeholders across a structured, opinionated software development lifecycle (SDLC). Humans decide; agents mutate; the system records.",
+    "problem": "AI coding agents are powerful but ungoverned — they operate without structure, auditability, or clear human oversight. Teams either micromanage every step or lose visibility entirely. There is no platform that provides a disciplined, auditable, human-in-the-loop workflow for AI-assisted software development at the team level.",
+    "targetAudience": [
+      "Software product teams using AI agents to build software",
+      "Product Owners, Business Analysts, Architects, Developers, QA engineers, and DevOps engineers working in structured SDLC workflows",
+      "Engineering leads who need audit trails and governance over AI-generated outputs",
+      "Process Refiners who need cross-project analytics to improve pipeline quality"
+    ],
+    "corePrinciples": [
+      "System owns truth — JSON artefacts, messages, feedback, and validation results are strict, enforced, and auditable",
+      "Git supports it — storage, history, diffs; not the domain model",
+      "UI drives behaviour — opinionated and structured; no freeform chaos"
+    ]
+  },
+  "goals": [
+    "Provide a structured, stage-gated SDLC workflow that coordinates human stakeholders and AI agents",
+    "Ensure every artefact change is traceable to a human decision via a complete audit trail",
+    "Prevent ungoverned agent mutations through validation, ownership enforcement, and commit-message coupling",
+    "Support asynchronous human review workflows without blocking agent progress unnecessarily",
+    "Enable lightweight, fast read-only agent queries (oracle mode) without spinning up compute",
+    "Capture telemetry data to surface pipeline health, agent performance, and human engagement quality",
+    "Deliver a Phase 1 working system with C# / SQLite backend and React/Vite frontend"
+  ],
+  "nonGoals": [
+    "Jira integration — explicitly out of scope and not a phase target",
+    "Real-time push notifications — deferred to Phase 2",
+    "Production deploy automation — NOOB marks as released but does not trigger deploys",
+    "Human direct artefact editing — humans express intent via messages only",
+    "General-purpose agent framework — NOOB is an opinionated c-SDLC implementation",
+    "Analytics view and cross-project metrics — deferred to Phase 2",
+    "PDF and binary source file support — text formats only in Phase 1",
+    "Real authentication — username-only auth in Phase 1"
+  ],
+  "userStories": [
+    {
+      "id": "US-01",
+      "role": "Product Owner",
+      "action": "hire a Noob for the Discovery stage and provide a brief",
+      "benefit": "so that a PRD artefact is produced from my project intent without me writing it manually"
+    },
+    {
+      "id": "US-02",
+      "role": "Stakeholder",
+      "action": "reply to a Noob's message and send feedback",
+      "benefit": "so that I can direct the agent's next action with a synthesised, explicit instruction"
+    },
+    {
+      "id": "US-03",
+      "role": "Stakeholder",
+      "action": "query a Noob using @mention",
+      "benefit": "so that I can get a fast, read-only answer about artefact state or task status without triggering a worker run"
+    },
+    {
+      "id": "US-04",
+      "role": "Developer",
+      "action": "view a structural JSON diff and rendered Markdown diff for every agent commit",
+      "benefit": "so that I can see exactly what changed and why, with full traceability back to the originating message"
+    },
+    {
+      "id": "US-05",
+      "role": "QA Engineer",
+      "action": "work in a dedicated Test Prep stage running in parallel with Design and Build",
+      "benefit": "so that test cases are ready before Review begins without blocking the build pipeline"
+    },
+    {
+      "id": "US-06",
+      "role": "Business Analyst",
+      "action": "reference artefacts using # syntax in messages",
+      "benefit": "so that structured intent is captured and the system can guard against cross-artefact write mistakes"
+    },
+    {
+      "id": "US-07",
+      "role": "Product Owner",
+      "action": "upload source files (transcripts, meeting notes) and reference them with $ syntax",
+      "benefit": "so that Noobs can use real stakeholder input as context when producing artefacts"
+    },
+    {
+      "id": "US-08",
+      "role": "DevOps Engineer",
+      "action": "receive a generated release notes artefact and mark a production release",
+      "benefit": "so that deployment is tracked without maintaining a parallel deployment record outside git"
+    },
+    {
+      "id": "US-09",
+      "role": "Engineering Lead",
+      "action": "see stuck detection flags on stale messages and stalled stages",
+      "benefit": "so that I can identify and unblock pipeline bottlenecks before they become critical"
+    },
+    {
+      "id": "US-10",
+      "role": "Any team member",
+      "action": "NFA a message thread",
+      "benefit": "so that I can close a conversation without triggering any agent action, keeping the message list clean"
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-01",
+      "area": "Project & Stage Management",
+      "description": "The system shall support a fixed stage sequence: Discovery → Clarification → Design → Build → Review → DevOps, with Test Prep running in parallel with Design and Build."
+    },
+    {
+      "id": "FR-02",
+      "area": "Project & Stage Management",
+      "description": "Each project shall have an immutable git slug (auto-generated from display name at creation, user-overridable before confirmation) and a mutable display name."
+    },
+    {
+      "id": "FR-03",
+      "area": "Project & Stage Management",
+      "description": "The docs repo shall be auto-created by NOOB at project creation as a local bare git repo. The code repo shall be connected externally via remote URL and SSH deploy key."
+    },
+    {
+      "id": "FR-04",
+      "area": "Agent Execution",
+      "description": "Worker Noobs shall execute in Docker containers. The container receives a brief and feedback as input, writes artefact files, and exits. All validation and business logic runs outside the container."
+    },
+    {
+      "id": "FR-05",
+      "area": "Agent Execution",
+      "description": "Oracle mode shall respond to @mention queries via a direct API call with no container, no writes, and access to the docs repo and the named Noob's working-state snapshot."
+    },
+    {
+      "id": "FR-06",
+      "area": "Agent Execution",
+      "description": "At the end of every worker run, the Noob shall write a working-state snapshot (currentTask, openQuestions, status, nextLikelyActions) to the database."
+    },
+    {
+      "id": "FR-07",
+      "area": "Artefact Management",
+      "description": "All artefacts shall be stored as JSON. Markdown rendering shall be produced on demand and never committed or edited directly."
+    },
+    {
+      "id": "FR-08",
+      "area": "Artefact Management",
+      "description": "Every agent commit shall reference a messageId. Commits without a valid message reference shall be rejected."
+    },
+    {
+      "id": "FR-09",
+      "area": "Artefact Management",
+      "description": "Artefact names shall follow the convention {type}_{qualifier} (e.g. spec_auth, tasks_payments). Conflict detection shall operate on the fully-qualified name."
+    },
+    {
+      "id": "FR-10",
+      "area": "Artefact Management",
+      "description": "Artefacts shall have two lifecycle states: Active (owned by exactly one Noob, writable) and Archived (unowned, read-only). Archiving is a human action."
+    },
+    {
+      "id": "FR-11",
+      "area": "Artefact Management",
+      "description": "A Noob's assigned artefact may be reassigned by a human when the Noob is in Waiting or Parked state, accompanied by new feedback scoping the updated task."
+    },
+    {
+      "id": "FR-12",
+      "area": "Validation",
+      "description": "All agent output shall be treated as untrusted. Validation shall enforce: schema correctness, referential integrity, file boundary limits (agent may only write to its assigned artefact), stage ownership, and commit identity rules."
+    },
+    {
+      "id": "FR-13",
+      "area": "Validation",
+      "description": "Validation results shall be: Pass (commit accepted), Soft Fail (commit accepted with warning, metrics not updated), or Hard Fail (commit rejected, agent must resubmit)."
+    },
+    {
+      "id": "FR-14",
+      "area": "Validation",
+      "description": "Phase 1 validation scope: spec and tasks artefacts only. PRD, TDS, testcases validation deferred to Phase 2."
+    },
+    {
+      "id": "FR-15",
+      "area": "Chat & Messaging",
+      "description": "The system shall support three explicit interaction types: normal message (human discussion, Noob sees nothing), @mention (oracle query, read-only response), and Send Feedback (worker instruction, may trigger mutation). No auto-routing."
+    },
+    {
+      "id": "FR-16",
+      "area": "Chat & Messaging",
+      "description": "Typing # in any message thread shall open artefact autocomplete, inserting a structured reference that renders as a tappable chip and is stored as artefactRefs on the feedback entity."
+    },
+    {
+      "id": "FR-17",
+      "area": "Chat & Messaging",
+      "description": "Typing $ in any message thread shall open source file autocomplete, inserting a structured reference that renders as a tappable chip and injects the file content into the Noob's execution context."
+    },
+    {
+      "id": "FR-18",
+      "area": "Chat & Messaging",
+      "description": "Send Feedback shall only be enabled when at least one human reply exists in the current cycle. It packages replies into a versioned Feedback entity and dispatches to the worker Noob."
+    },
+    {
+      "id": "FR-19",
+      "area": "Noob Lifecycle",
+      "description": "Noobs shall have four states: Working (executing in container), Waiting on humans (message posted), Parked (NFA'd, idle), Dismissed (removed entirely). Dismiss is only available from Parked state."
+    },
+    {
+      "id": "FR-20",
+      "area": "Noob Lifecycle",
+      "description": "Noobs that write code shall be assigned a branch in the code repo on first commit: noob/{project-slug}/{noob-name}. PRs and merges are handled by developers outside NOOB."
+    },
+    {
+      "id": "FR-21",
+      "area": "Source Files",
+      "description": "Humans shall be able to upload source files (text formats only, max 5 MB) at stage or project level. Files are stored in the docs repo under /inputs/{stage}/ or /inputs/project/. Duplicate filenames are rejected."
+    },
+    {
+      "id": "FR-22",
+      "area": "Stage Gates",
+      "description": "The Review stage shall only open when Build has reached deployable state AND Test Prep has produced a valid testcases artefact."
+    },
+    {
+      "id": "FR-23",
+      "area": "Stage Gates",
+      "description": "The DevOps stage shall surface UAT deploy state, CI/CD pipeline status, release notes generation, and a 'Mark as released to production' human gate action."
+    },
+    {
+      "id": "FR-24",
+      "area": "Stuck Detection",
+      "description": "The system shall flag message.isStale when a message has had no activity for 48 hours, and stage.isStalled when a stage has been active with no commits for 24 hours. Phase 1: visibility only, no enforcement."
+    },
+    {
+      "id": "FR-25",
+      "area": "Telemetry",
+      "description": "The system shall capture all Easy telemetry fields (per-run records, feedback cycle records, human interaction records, process records) in Phase 1. Schema shall include all Medium and Hard fields as nullable."
+    },
+    {
+      "id": "FR-26",
+      "area": "Cross-artefact Write Guard",
+      "description": "# artefact mention structural detection (Option A) shall be implemented at dispatch time. A commit touching files outside the Noob's assigned artefact is always rejected by the validation layer."
+    },
+    {
+      "id": "FR-27",
+      "area": "Model Routing",
+      "description": "The system shall route agent tasks by type: Type A (deep reasoning) to Sonnet, Type B (structured edits) to Haiku, Type C (deterministic validation/diffing) to code-only with no model invocation."
+    },
+    {
+      "id": "FR-28",
+      "area": "Views",
+      "description": "The system shall provide a Message View (primary working view, open messages across projects/stages with filters and staleness sort) and a Stage View (stage strip + drill-down with artefact list, Noobs section, and Hire button)."
+    },
+    {
+      "id": "FR-29",
+      "area": "Views",
+      "description": "The Diff View shall be accessible from any message with a registered commit hash, showing both a structural JSON diff and a rendered Markdown diff."
+    },
+    {
+      "id": "FR-30",
+      "area": "Notifications",
+      "description": "Notifications shall be a distinct entity from messages — FYI only, no reply, no lifecycle. Generated by SOT artefact changes, stuck detection, UAT loop-back events, and pipeline status changes. Data model in Phase 1; display surface deferred to Phase 2."
+    }
+  ],
+  "nonFunctionalRequirements": [
+    {
+      "id": "NFR-01",
+      "area": "Auditability",
+      "description": "Every artefact mutation shall trace back to a human decision. Every human decision shall trace forward to an artefact change. The audit path is: artefact ↔ commit ↔ feedback ↔ message."
+    },
+    {
+      "id": "NFR-02",
+      "area": "Performance",
+      "description": "Oracle mode responses shall be designed for conversational response times. Worker runs are async and not expected to be real-time."
+    },
+    {
+      "id": "NFR-03",
+      "area": "Cost",
+      "description": "The cost strategy shall be: deterministic first (no model) → Haiku for bounded queries → Sonnet for deep reasoning. Avoid unnecessary embedding and retrieval cost — most operations should never touch an LLM."
+    },
+    {
+      "id": "NFR-04",
+      "area": "Security",
+      "description": "Agent containers are untrusted producers. All output is treated as untrusted input until validated outside the container. Agents may only write to their assigned artefact."
+    },
+    {
+      "id": "NFR-05",
+      "area": "Technology Stack",
+      "description": "Phase 1 stack: C# minimal API + SQLite backend, React/Vite frontend, single container, single port, username-only auth."
+    },
+    {
+      "id": "NFR-06",
+      "area": "Data Integrity",
+      "description": "approvedBy, approvedAt, and stageTransitionReason must be recorded on every stage state change from Phase 1. These fields underpin gate effectiveness and decision quality analysis in later phases."
+    }
+  ],
+  "agentAPI": {
+    "description": "The following Agent API endpoints shall be exposed in Phase 1",
+    "endpoints": [
+      { "method": "POST", "path": "/api/agent/message", "purpose": "Post a message; optionally tag roles" },
+      { "method": "POST", "path": "/api/agent/commit", "purpose": "Register commit; triggers validation; returns pass/soft fail/hard fail" },
+      { "method": "GET", "path": "/api/agent/task/{id}", "purpose": "Read task state: brief, phase, open messages, latest feedback" },
+      { "method": "GET", "path": "/api/agent/feedback/{messageId}", "purpose": "Read latest feedback for a thread" },
+      { "method": "POST", "path": "/api/agent/sot-change", "purpose": "Notify SOT file change; triggers cross-stage invalidation" },
+      { "method": "POST", "path": "/api/agent/telemetry", "purpose": "Record action telemetry" },
+      { "method": "GET", "path": "/api/agent/snapshot/{noobId}", "purpose": "Read working-state snapshot" },
+      { "method": "PUT", "path": "/api/agent/snapshot/{noobId}", "purpose": "Write working-state snapshot" }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "OQ-01",
+      "question": "PM agent brief intake: text message, file upload, or git repo path?"
+    },
+    {
+      "id": "OQ-02",
+      "question": "Generated summaries trigger: on new message, new commit, or both?"
+    },
+    {
+      "id": "OQ-03",
+      "question": "UAT loop-back mechanism: new message in Build, or direct task append to tasks artefact? Who creates it — DevOps agent or human?"
+    },
+    {
+      "id": "OQ-04",
+      "question": "Oracle response threading: does the oracle response appear as a Noob message in the thread, or as a distinct UI element?"
+    },
+    {
+      "id": "OQ-05",
+      "question": "Telemetry push vs derived: does the agent push telemetry via API, or does the system derive it from commit/message timestamps?"
+    },
+    {
+      "id": "OQ-06",
+      "question": "Cross-artefact write guard Options B and C: is latency + cost of a pre-dispatch Haiku intent check (B) preferable to container-side intent declaration (C) for handling free-text cross-artefact instructions not caught by # syntax?"
+    }
+  ],
+  "phaseScope": {
+    "phase1": {
+      "label": "Phase 1 — In Scope",
+      "items": [
+        "C# minimal API + SQLite backend; React/Vite frontend; single container; single port; username-only auth",
+        "Full Noob lifecycle: Working, Waiting, Parked, Dismissed",
+        "All four stages fully implemented: Discovery, Clarification, Design, Build, Test Prep (parallel), Review, DevOps",
+        "Two-repo model: docs repo auto-created; code repo externally connected via URL + SSH deploy key",
+        "Worker agent execution: Dockerised thin runner; validation outside container",
+        "Oracle mode: @mention routes to read-only response",
+        "Working-state snapshot: written at end of worker run, read at start of next run",
+        "Chat model: normal message / @mention / Send Feedback — explicit, no auto-routing",
+        "# artefact mention: autocomplete, chip rendering, artefactRefs on feedback",
+        "$ source file mention: autocomplete, chip rendering, content injection into Noob context",
+        "Artefact naming convention: {type}_{qualifier} enforced at hire time",
+        "Artefact lifecycle: archive, reassignment, pre-creation",
+        "Artefact validation: spec and tasks artefacts",
+        "Commit ↔ message coupling enforcement",
+        "JSON diff + rendered Markdown diff view",
+        "Per-artefact concurrency enforcement and cross-artefact write guard (Option A)",
+        "Review stage gate: requires Build (deployable) + Test Prep (valid testcases)",
+        "Stuck detection: stale message + stalled stage flags (background job; visibility only)",
+        "Telemetry recording for all agent actions (data captured; UI Phase 2)",
+        "Source files: human-uploaded per stage or project; text formats only; 5 MB limit",
+        "Notifications data model (display surface Phase 2)",
+        "Project identity: display name + immutable git slug",
+        "Role colour coding; dark mode toggle; manual refresh (no real-time push)",
+        "Message View and Stage View",
+        "Agent API including snapshot and telemetry endpoints",
+        "UAT feedback loops; DevOps stage UAT deploy surface, pipeline state, release notes, mark-as-released action"
+      ]
+    },
+    "phase2": {
+      "label": "Phase 2 — Deferred",
+      "items": [
+        "Real authentication and login",
+        "SOT notification display surface",
+        "Generated stage and project status summaries",
+        "Sub-stage progress bars",
+        "Real-time push (SignalR)",
+        "PM agent integration",
+        "Stuck detection escalation",
+        "Validation of PRD, TDS, testcases artefacts",
+        "Human direct artefact editing",
+        "Analytics view (burndowns, retry heatmaps, loop frequency)",
+        "Process Refiner role and cross-project metrics",
+        "Production deploy automation",
+        "Bug tracking (live production bugs)",
+        "Medium-difficulty telemetry fields active; all derived metrics live; repeat failure detection live"
+      ]
+    },
+    "outOfScope": [
+      "Jira integration"
+    ]
+  }
+}
